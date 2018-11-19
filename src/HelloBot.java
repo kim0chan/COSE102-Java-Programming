@@ -26,5 +26,6 @@ public class HelloBot extends AbilityBot {
         .privacy(PUBLIC)
         .action(ctx -> silent.send("Hello world!", ctx.chatId()))
         .build();
+    //test
   }
 }
