@@ -20,11 +20,11 @@ public class HelloBot extends AbilityBot {
   public Ability sayHelloWorld() {
     return Ability
         .builder()
-        .name("xoxo")
+        .name("hello")
         .info("says hello world!")
         .locality(ALL)
         .privacy(PUBLIC)
-        .action(ctx -> silent.send("Hellox world!", ctx.chatId()))
+        .action(ctx -> silent.send("Hello world!", ctx.chatId()))
         .build();
   }
 }
