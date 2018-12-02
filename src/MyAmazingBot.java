@@ -26,4 +26,8 @@ public class MyAmazingBot extends TelegramLongPollingBot {
 	public String getBotToken() {
 		return "734999045:AAG4XUexxr7ImZMwIU7wS7KTM45SGtnrKCc";
 	}
+	
+	/*public getWeatherInformation() {
+		
+	}*/
  }
