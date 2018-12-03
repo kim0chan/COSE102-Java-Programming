@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="telegrambots-4.1-jar-with-dependencies.jar"/>
 	<classpathentry kind="lib" path="telegrambots-abilities-4.1-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="jsoup-1.11.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
