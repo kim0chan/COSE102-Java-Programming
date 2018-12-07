@@ -37,12 +37,20 @@ public class GetInformation {
 		return finedust;
 	}
 	
-	/*public String generateSentence() {
+	public String generateSentence() {
 		int tmp = getTemperature();
 		int fnd = getFinedust();
 		String tmp_o = new String();
 		String fnd_o = new String();
+		String sentence = new String();
 		
-		
-	}*/
+		if(tmp < -10) tmp_o = "오늘은 매우 춥다. 괜히 밖에 나가지 말고 이불 속에 박혀있도록?";
+		else if(-10 <= tmp && tmp < 5) tmp_o = "춥다. 감기 조심하고 코 닦을 휴지는 두둑히 챙겨 두자;";
+		else if(5 <= tmp && tmp < 15) tmp_o = "코가 근질근질할 때엔 지르텍을 미리 사 먹어라";
+		else if(15 <= tmp && tmp < 25) tmp_o = "딱 적당한 기온이다. 밖에 좀 나가도록";
+		else if(25 <= tmp && tmp < 35) tmp_o = "더우니 물 많이 마시고 운동은 조심해서 할 수 있도록 한다";
+		else tmp_o = "살았니?";
+	
+		return sentence;
+	}
 }
