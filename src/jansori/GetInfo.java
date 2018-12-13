@@ -59,6 +59,7 @@ public class GetInfo {
 		String tmp_o = new String();
 		String fnd_o = new String();
 		String rr_o = new String();
+		String rainsnow = new String();
 		String sentence = new String();
 		
 		//tmp 설정
@@ -78,11 +79,14 @@ public class GetInfo {
 		//rr 설정
 		int rrrr = rr[0] + rr[1];
 		
+		if(tmp > 0) rainsnow = "비가";
+		else rainsnow = "눈이";
+		
 		if(rrrr == 0) rr_o = "날씨는 좋습니다!";
-		else if(0 < rrrr && rrrr <= 40) rr_o = "구름이 조금 있겠지만 비가 올 확률은 작습니다.";
-		else if(40 < rrrr && rrrr <= 100) rr_o = "비가 올 확률이 꽤 됩니다. 혹시 모르니 우산을 챙겨보세요.";
+		else if(0 < rrrr && rrrr <= 40) rr_o = "구름이 조금 있겠지만" + rainsnow + " 올 확률은 작습니다.";
+		else if(40 < rrrr && rrrr <= 100) rr_o = rainsnow + " 올 확률이 꽤 됩니다. 상황을 봐서 우산을 챙겨보는게 어떨까요?";
 		else if(100 < rrrr && rrrr <= 160) rr_o = "먹구름이 잔뜩 꼈네요. 우산을 챙겨보세요.";
-		else rr_o = "오늘은 비가 오네요. 우산 챙기세요.";
+		else rr_o = "오늘은 " + rainsnow + " 오네요. 우산 챙기세요.";
 	
 		sentence = tmp_o + "\n" + rr_o + "\n" + fnd_o;
 		return sentence;

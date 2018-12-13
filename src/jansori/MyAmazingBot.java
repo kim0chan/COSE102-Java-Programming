@@ -23,7 +23,7 @@ public class MyAmazingBot extends TelegramLongPollingBot {
 	}
 	@Override
 	public String getBotUsername() {
-		return "JansoriBot";
+		return "AnamWeatherBot";
 	}
 	
 	public String getBotToken() {
