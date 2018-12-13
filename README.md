@@ -21,7 +21,7 @@ public String getBotUsername() {
 In this way, you can apply your bot.
 
 ### Functioning
-You can modify the urls and the condition of the method 'execute(message)'. But since it uses web crawling method based on Jsoup library, you might have to modify the 'Document' part too. You can also change the 'generateSentence()' based on your experience.
+You can modify the urls and the condition of the method `execute(message)`. But since it uses web crawling method based on Jsoup library, you might have to modify the 'Document' part too. You can also change the `generateSentence()` based on your experience.
 
 ### On Telegram
 Add your bot in your friend list. While running the program, your bot will reply to your message.
