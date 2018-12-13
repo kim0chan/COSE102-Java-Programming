@@ -15,7 +15,7 @@ public String getBotUsername() {
 	}
 	
 	public String getBotToken() {
-		return "123456789:BlahbLahBlAHblaHBlaah"; Your bot's token
+		return "123456789:BlahbLahBlAHblaHBlaah"; //Your bot's token
 	}
 ```
 In this way, you can apply your bot.
