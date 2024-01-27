@@ -153,7 +153,9 @@ public static void main(String[] args) {
     } catch (TimeInputException e) {
         System.out.println(e.getMessage());
     }
-    // main 메소드에서 Exception을 처리해 주지 않는다면, Exception이 main 메소드를 호출한 jvm에게까지 넘어가게 되고 프로그램이 비정상 종료된다.
+    // main 메소드에서 Exception을 처리해 주지 않는다면,
+    // Exception이 main 메소드를 호출한 jvm에게까지 넘어가게 되고
+    // 프로그램이 비정상 종료된다.
 }
 
 public static int readTime() throws TimeInputException {

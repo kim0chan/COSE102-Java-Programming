@@ -5,7 +5,7 @@
 Person person = new Person();
 // 부모 타입으로 자식 클래스 객체 생성
 // 배열로 관리하며 중복 메소드 호출하는 등의 방법을 사용할 수 있음
-Person teacher = new Student();
+Person student = new Student();
 Person teacher = new Teacher();
 ```
 
@@ -32,7 +32,7 @@ Person teacher = new Teacher();
     * A가 B의 부모이면 `false`
     * A의 참조 데이터 타입과 B의 부모가 동일하면 `false`
     * 부모/자식 관계에 속하지 않는 것끼리 `instanceof`하면 컴파일 에러
-    * `true`는 검사한 타입으로 형병환을 홰도 아무 문제가 없다는 뜻이고 `false`는 형변환이 불가능하거나 문제가 생긴다는 것을 뜻함
+    * `true`는 검사한 타입으로 형변환을 해도 아무 문제가 없다는 뜻이고 `false`는 형변환이 불가능하거나 문제가 생긴다는 것을 뜻함
         * 부모-자식 관계이거나 형제 관계가 아니면 `false`
     * 주로 조건문에 사용
 
