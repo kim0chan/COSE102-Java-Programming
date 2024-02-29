@@ -520,5 +520,321 @@ public class ConcreteHandler2 extends Handler {
 
 ### Command Pattern
 * 요청 자체를 캡슐화
+### 예제
+```java
+public interface Command {
+  void execute();
+}
 
+public class Light {
+  public void turnOn() {
+    System.out.println("light on");
+  }
 
+  public void turnOff() {
+    System.out.println("light off");
+  }
+}
+
+public class LightOnCommand implements Command {
+  private Light light;
+
+  public LightOnCommand(Light light) {
+    this.light = light;
+  }
+
+  public void execute() {
+    light.turnOn();
+  }
+}
+
+public class LightOffCommand implements Command {
+  private Light light;
+
+  public LightOffCommand(Light light) {
+    this.light = light;
+  }
+
+  public void execute() {
+    light.turnOff();
+  }
+}
+```
+```java
+public class RemoteControl {
+  private Map<Command, Runnable> buttonActions = new HashMap<>();
+
+  public void setCommand(Command command, Runnable buttonAction) {
+    buttonActions.put(command, buttonAction);
+  }
+
+  public void pressButton(Command command) {
+    buttonActions.get(command).run();
+  }
+}
+
+public class CommandExample {
+  public static void main(String[] args) {
+    Light light = new Light();
+    Command lightOnCommand = new LightOnCommand(light);
+    Command lightOffCommand = new LightOffCommand(light);
+    RemoteControl remoteControl = new RemoteControl();
+
+    remoteControl.setCommand(lightOnCommand, () -> {
+      System.out.println("Turning light on");
+      lightOnCommand.execute();
+    });
+
+    remoteControl.setCommand(lightOffCommand, () -> {
+      System.out.println("Turning light off");
+      lightOffCommand.execute();
+    });
+
+    remoteControl.pressButton(lightOnCommand);
+    remoteControl.pressButton(lightOffCommand);
+  }
+}
+```
+* 처리 요청을 수행하는 액션과 이를 받는 객체 사이의 연결 관계를 정의
+* Undo, Redo 연산 지원하기
+  * 추가적인 상태 정보 관리
+    * 실제 요청을 처리할 책임을 가지는 수신 객체
+    * 수신 객체가 수행할 연산에 필요한 매개변수 정보
+    * 요청이 처리되어 변하기 전의 원래 값
+
+### Mediator Pattern
+* 한 집합에 속해있는 객체의 상호작용을 캡슐화하는 객체를 정의
+* 객체들이 서로를 직접 참조하지 않도록 함 (loose coupling)
+
+### Memento Pattern
+* 캡슐화를 위배하지 않은 채 객체의 내부 상태를 잡아내고 실체화시켜 둠  
+-> 이후 해당 객체가 그 상태로 되돌아올 수 있도록 함
+
+### Observer Pattern
+* 객체 사이에 일대다의 의존 관계를 정의하여 객체 상태가 변할 때 객체에 의존성을 가진 다른 객체들이 그 변화에 대해 통지받음
+* 통지를 받은 객체는 정의된 행동(자동 갱신 등)을 수행함
+
+### State Pattern
+* 객체 내부 상태에 따라 행동을 변경하게 허가하는 패턴(마치 클래스를 스스로 바꾸는 것처럼)
+### 예제(3-Way Handshake)
+```java
+public interface TCPState {
+  void open(TCPConnection connection);
+  void close(TCPConnection connection);
+  void acknowledge(TCPConnection connection);
+}
+
+public class TCPAcknowledgedState implements TCPState {
+  public void open(TCPConnection connection) {
+    System.out.println("TCP Connection is already open");
+  }
+
+  public void close(TCPConnection connection) {
+    connection.setState(new TCPClosedState());
+    System.out.println("TCP Connection closed");
+  }
+
+  public void acknowledge(TCPConnection connection) {
+    System.out.println("TCP Connection already ack-ed");
+  }
+}
+
+public class TCPClosedState implements TCPState {
+  public void open(TCPConnection connection) {
+    connection.setState(new TCPOpenState());
+    System.out.println("TCP Connection opened");
+  }
+
+  public void close(TCPConnection connection) {
+    System.out.println("TCP Connection already closed");
+  }
+
+  public void acknowledge(TCPConnection connection) {
+    System.out.println("Cannot acknowledge: connection is closed");
+  }
+}
+
+public class TCPOpenState implements TCPState {
+  public void open(TCPConnection connection) {
+    System.out.println("TCP Connection already open");
+  }
+
+  public void close(TCPConnection connection) {
+    connection.setState(new TCPClosedConnection());
+    System.out.println("TCP Connection closed");
+  }
+
+  public void acknowledge(TCPConnection connection) {
+    connection.setState(new TCPAcknowledgedState());
+    System.out.println("TCP Connection Acknowledged");
+  }
+}
+```
+```java
+public class TCPConnection {
+  private TCPState state;
+
+  public TCPConnection(TCPState state) {
+    state = new TCPClosedState();
+  }
+
+  public void setState(TCPState state) {
+    this.state = state;
+  }
+
+  public void open() {
+    state.open(this);
+  }
+
+  public void close() {
+    state.close(this);
+  }
+
+  public void acknowledge() {
+    state.acknowledge(this);
+  }
+}
+```
+* 상태에 따른 행동을 국소화
+  * 서로 다른 상태에 대한 행동을 별도의 객체로 관리
+  * 임의의 상태에 관련된 모든 바람직한 행동을 하나의 객체에 모을 수 있음
+* 상태 전이가 명확해짐
+* 상태 객체의 공유가 가능해짐
+
+### Strategy Pattern
+* 동일 계열의 알고리즘군을 정의, 각 알고리즘을 캡슐화하여 상호 교환이 가능하도록 만들기
+* 알고리즘 사용 주체와 상관 없이 알고리즘을 독립적으로 변경, 사용할 수 있음
+### 예제
+```java
+public interface Item {
+  int attack();
+}
+
+public class Sword implements Item {
+  @Override
+  public int attack() {
+    return 10;
+  }
+}
+
+public class Axe implements Item {
+  @Override
+  public int attack() {
+    return 15;
+  }
+}
+
+public class Gun implements Item {
+  @Override
+  public int attack() {
+    return 30;
+  }
+}
+```
+```java
+public class Character {
+  private Item item;
+
+  public void setItem(Item item) {
+    this.item = item;
+  }
+
+  public int attackWithItem() {
+    return item.attack();
+  }
+}
+
+public class Game {
+  public static void main(String[] args) {
+    Character character = new Character();
+
+    character.setItem(new Sword());
+    System.out.println("Damage: " + character.attackWithItem());
+
+    character.setItem(new Axe());
+    System.out.println("Damage: " + character.attackWithItem());
+
+    character.setItem(new Gun());
+    System.out.println("Damage: " + character.attackWithItem());
+  }
+}
+```
+* 동일 계열 알고리즘군이 생성됨
+  * 상속을 통해 알고리즘 공통의 기능성을 추출하고 재사용할 수 있음
+* `if`, `switch`-`case` 등의 조건문 없이 구현 가능
+
+### Template Method Pattern
+* 인터페이스(추상클래스)에 알고리즘의 뼈대만 정의하고 구체적 처리는 서브클래스로 미루기
+* 알고리즘 구조 차제는 놔둔 채 각 단계의 처리는 서브클래스에서 재정의하게 한다.
+```java
+public abstract class Game {
+  public void play() {
+    initialize();
+
+    while(!isGameOver()) {
+      takeTurn();
+    }
+
+    displayWinner();
+  }
+
+  protected abstract void initialize();
+
+  protected abstract boolean isGameOver();
+
+  protected abstract void takeTurn();
+
+  protected abstract void displayWinner();
+}
+
+public class Chess extends Game {
+  private int turn = 1;
+  private boolean gameOver = false;
+
+  @override
+  protected abstract void initialize() {
+    System.out.println("Organizing chess board.");
+  }
+
+  @Override
+  protected abstract boolean isGameOver() {
+    return gameOver;
+  }
+
+  @Override
+  protected abstract void takeTurn() {
+    turn++;
+
+    if (turn > 10) {
+      gameOver = true;
+    }
+  }
+
+  @Override
+  protected abstract void displayWinner() {
+    String winner = new String();
+    winner = (turn % 2) ? "W" : "B";  // I don't know the rule btw
+    System.out.println("The winner is " + winner);
+  }
+}
+```
+* 클래스 라이브러리 구현 시 중요한 기술(클래스들 공통 부분을 분리하는 수단이기 때문)
+* 역전된 제어구조 ("Hollywood Principle")
+  * IoC(Inverse of Control), DI(Dependency Injection), DIP(Dependency Inversion Principle)
+
+## What to Expect from Design Patterns
+### 설계자들의 어휘
+* 설계를 하거나 문서화를 할 때 협업자들이 공통으로 사용할 수 있는 공통 단어를 제공함
+* 시스템의 복잡도를 줄이고, 쉽게 이해하게 하며, 설계 논의의 추상화 수준을 높인다.
+
+### 시스템 문서화와 학습 보조도구
+* 큰 객체지향 시스템은 디자인 패턴을 사용한다.
+* 디자인 패턴을 배우면 객체지향 시스템을 이해하는 데에 많은 도움이 된다.
+
+### 기존 방법에 대한 보조
+* OOP는 훌륭한 설계를 지원하고 초보 설계자에게 설계를 잘하는 방법을 가르치며, 설계가 개발되는 과정을 표준화한다.
+* 디자인 패턴은 객체, 상속, 다형성과 같은 기본적인 기법들을 어떻게 사용해야 하는지 보여줌
+
+### 리팩토링을 위한 목표
+* 소프트웨어 재사용을 위해서는 소프트웨어 재구성이나 리팩토링이 필요하다.
+* 디자인 패턴을 잘 적용하면 설계 재구성이 용이해져 잠재적 리팩토링 양을 줄일 수 있다.
